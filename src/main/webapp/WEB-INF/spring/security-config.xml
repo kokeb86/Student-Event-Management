@@ -15,16 +15,18 @@
 
 	<http auto-config='true'>
 		<intercept-url pattern="/login" access="isAnonymous()" />
+		<intercept-url pattern="/user/signup" access="isAnonymous()" />
 		<form-login login-page='/login' default-target-url="/home"
 			authentication-failure-url="/login?error=true" password-parameter="password"
 			username-parameter="username" />
+
 		<http-basic />
 		<intercept-url pattern="/resource/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/**" access="isAuthenticated()" />
 		<logout logout-success-url="/login?logout" invalidate-session="true"
 			delete-cookies="JSESSIONID" />
 		<remember-me remember-me-parameter="rememberMe" />
-		
+
 	</http>
 
 	<global-method-security pre-post-annotations="enabled" />

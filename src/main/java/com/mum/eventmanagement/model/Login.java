@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,10 +29,17 @@ public class Login implements UserDetails {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	
+	@Column(unique = true)	
+	@Email(message = "{User.Email.Error}")
+	@NotEmpty(message = "{NotEmpty}")
 	private String email;
+	
+	
+	@NotEmpty(message = "{NotEmpty}")	
 	private String password;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 
@@ -38,7 +49,7 @@ public class Login implements UserDetails {
 	public Login() {
 	}
 
-	public Integer getId() {		
+	public Integer getId() {
 		return id;
 	}
 
@@ -69,7 +80,6 @@ public class Login implements UserDetails {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -107,10 +117,9 @@ public class Login implements UserDetails {
 		authorities.add(new SimpleGrantedAuthority(this.role.toString()));
 		return authorities;
 	}
-	
 
 	public void setUsername(String email) {
-		this.setEmail(email);;
+		this.setEmail(email);
 	}
 
 	@Override
@@ -138,4 +147,12 @@ public class Login implements UserDetails {
 		return true;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+		;
+	}
 }

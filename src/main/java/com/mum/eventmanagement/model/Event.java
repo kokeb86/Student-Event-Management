@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,17 +28,19 @@ public class Event {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@NotEmpty(message="{NotEmpty}")
+	@NotEmpty(message = "{NotEmpty}")
 	private String name;
-	@NotEmpty(message="{NotEmpty}")	
+	@NotEmpty(message = "{NotEmpty}")
+	@Column(columnDefinition = "TEXT")
 	private String description;
-	@Min(value = 1,message = "{MinmumSizeLimit}")
-	private Integer membersSizeLimit;	
+	@Min(value = 1, message = "{MinmumSizeLimit}")
+	private Integer membersSizeLimit;
+	@Column(columnDefinition = "TEXT")
 	private String resourcesDescription;
 
-	@Future(message ="{Future}")
+	@Future(message = "{Future}")
 	private Date startTime;
-	@Future(message ="{Future}")
+	@Future(message = "{Future}")
 	private Date endTime;
 
 	@NotNull
@@ -65,10 +68,11 @@ public class Event {
 	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 
-	@OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private List<Like> likes;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "MEMBERS_LIKE_LIST", joinColumns = @JoinColumn(name = "EVENT_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+	private List<User> likedBy;
 
-	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "assingedFor")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "assingedFor")
 	private List<Resource> assingedResources;
 
 	public void addJoinRequest(User member) {
@@ -110,6 +114,27 @@ public class Event {
 			isFull = true;
 		}
 		return isFull;
+	}
+
+	public void like(User user) {
+		if (likedBy.contains(user)) {
+			likedBy.remove(user);
+		} else {
+			likedBy.add(user);
+		}
+	}
+
+	public boolean isLikedBy(String username) {
+		for (User user : likedBy) {
+			if (user.getUsername().matches(username)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int getLikeCounts() {
+		return this.likedBy.size();
 	}
 
 	public Integer getId() {
@@ -200,14 +225,6 @@ public class Event {
 		this.comments = comments;
 	}
 
-	public List<Like> getLikes() {
-		return likes;
-	}
-
-	public void setLikes(List<Like> likes) {
-		this.likes = likes;
-	}
-
 	public List<Resource> getAssingedResources() {
 		return assingedResources;
 	}
@@ -230,6 +247,14 @@ public class Event {
 
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+
+	public int getNumberOfJoines() {
+		return this.approvedMembers.size();
+	}
+
+	public boolean isNotFull() {
+		return membersSizeLimit == null ? true : (membersSizeLimit - getNumberOfJoines() > 0);
 	}
 
 	@Override

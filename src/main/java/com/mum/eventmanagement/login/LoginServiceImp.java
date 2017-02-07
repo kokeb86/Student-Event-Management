@@ -16,7 +16,7 @@ public class LoginServiceImp implements UserDetailsService {
 	LoginRepository repository;
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+	public Login loadUserByUsername(String email) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		Login user = repository.findByEmail(email);
 		if (user == null) {

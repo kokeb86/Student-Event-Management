@@ -1,6 +1,8 @@
-package com.mum.eventmanagement.event;
+package com.mum.eventmanagement.event.service;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
 
 import com.mum.eventmanagement.model.Event;
 
@@ -10,4 +12,7 @@ public interface EventService {
 
 	Event findOne(int id);
 
+	Page<Event> getEvents(Integer pageNumber);
+
+	void save(Event event);
 }

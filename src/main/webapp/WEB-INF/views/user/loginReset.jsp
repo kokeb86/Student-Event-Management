@@ -15,23 +15,18 @@
 	href='<spring:url value="/resources/css/loginStyle.css"/>' />
 </head>
 <body>
-
-
-
-	<div class="wrapper">
+<div class="wrapper">
 		<form method="POST" class="form-signin">
-			<h2 class="form-signin-heading">Please login</h2>
+			<h2 class="form-signin-heading">Please try again</h2>
 			<div class="form-group ${error != null ? 'has-error alert alert-danger' : ''}">
-				<span>${message}</span> <span>${error}</span> 
+				<span>${message}</span> <span>${error}</span>
+				<a href="user/loginReset">I forgot my password </a>
 			</div>
 			<input type="text" class="form-control" name="username"
 				placeholder="Email Address" 
 				autofocus="autofocus" /> <input type="password"
-				class="form-control" name="password" placeholder="Password"
-				/> <label class="checkbox"> <input
-				type="checkbox" id="rememberMe"
-				name="rememberMe"> Remember me
-			</label> <input type="hidden" name="${_csrf.parameterName}"
+				class="form-control" name="password" placeholder="Password"/>
+			 <input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>

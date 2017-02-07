@@ -12,15 +12,17 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(required = false) String error, @RequestParam(required = false) String logout,
 			Model model) {
-		System.out.println("hellow ");
+		System.out.println("hallow ");
 
-		if (error != null)
-			model.addAttribute("error", "Your username and password is invalid.");
-
+		if (error != null){
+			model.addAttribute("error", "Your user name and password is invalid.");
+			//all data must be eriased or removed 
+			return "/user/loginReset";
+		}
 		if (logout != null)
 			model.addAttribute("message", "You have been logged out successfully.");
 
-		return "login";
+		return "/login";
 	}
 
 	@RequestMapping("/logout")

@@ -12,9 +12,9 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<h1>
-					<a href="#" title="scroll down for your viewing pleasure">Bootstrap
-						3 Layout Template</a>
-					<p class="lead">Top Header and Fixed Sidebar</p>
+					<a href="#" title="scroll down for your viewing pleasure">Events
+						Are Fun!</a>
+					<p class="lead"></p>
 				</h1>
 			</div>
 			<div class="col-sm-6">
@@ -22,6 +22,7 @@
 					<h2>
 						<a href="#"><i class="glyphicon glyphicon-user"></i></a>
 					</h2>
+					<h3><a href = "#"><span id = "username">${pageContext.request.userPrincipal.name}</span></a></h3>
 				</div>
 			</div>
 		</div>
@@ -59,10 +60,11 @@
 					<li><a href="#"><i class="glyphicon glyphicon-flag"></i> <span
 							class="badge">2</span></a></li>
 					<li>
-						<form style="display:inline" action='<spring:url value="/logout"/>' method="post">
-							<input style="display:inline" type="submit" value="Logout" />
-							<input type="hidden"
-								name="${_csrf.parameterName}" value="${_csrf.token}" />
+						<form style="display: inline"
+							action='<spring:url value="/logout"/>' method="post">
+							<input style="display: inline" type="submit" value="Logout" /> <input
+								type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
 						</form>
 					</li>
 				</ul>

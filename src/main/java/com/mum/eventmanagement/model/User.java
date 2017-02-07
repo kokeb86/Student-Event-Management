@@ -2,6 +2,7 @@ package com.mum.eventmanagement.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class User {
@@ -17,12 +21,17 @@ public class User {
 	@GeneratedValue
 	private Integer id;
 
+	@NotEmpty(message = "{NotEmpty}")
+	private String gender;
+
+	@NotEmpty(message = "{NotEmpty}")
 	private String name;
 
 	@Embedded
 	private Address address;
 
-	@OneToOne(mappedBy = "user", optional = false, fetch = FetchType.LAZY)
+	@Valid
+	@OneToOne(mappedBy = "user", optional = false, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Login login;
 
 	@ManyToMany(mappedBy = "approvedMembers", fetch = FetchType.LAZY)
@@ -30,6 +39,14 @@ public class User {
 
 	@ManyToMany(mappedBy = "waitingMembers", fetch = FetchType.LAZY)
 	private List<Event> requestedEvents;
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 	public String getName() {
 		return name;
@@ -53,10 +70,6 @@ public class User {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Role getRole() {
-		return login.role;
 	}
 
 	public void setRole(Role role) {
@@ -92,6 +105,35 @@ public class User {
 		} else if (!login.equals(other.login))
 			return false;
 		return true;
+	}
+
+	public User() {
+		super();
+		this.login = new Login();
+	}
+
+	public String getEmail() {
+		return login.getEmail();
+	}
+
+	public String getPassword() {
+		return login.getPassword();
+	}
+
+	public Role getRole() {
+		return login.getRole();
+	}
+
+	public String getUsername() {
+		return login.getUsername();
+	}
+
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 
 }

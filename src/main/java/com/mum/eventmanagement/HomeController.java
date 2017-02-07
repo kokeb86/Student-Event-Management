@@ -7,6 +7,8 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,7 @@ public class HomeController {
 	@PreAuthorize("authenticated()")
 	@RequestMapping(value = { "/", "/index", "/home" }, method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
+		
 		logger.info("Welcome home! The client locale is {}.", locale);
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -33,4 +36,15 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate);
 		return "home";
 	}
+
+	@RequestMapping(value = "/sidebar", method = RequestMethod.GET)
+	public String sideBar() {
+		return "sidebar";
+	}
+
+	@RequestMapping(value = "/topNews", method = RequestMethod.GET)
+	public String topNews() {
+		return "topNews";
+	}
+
 }

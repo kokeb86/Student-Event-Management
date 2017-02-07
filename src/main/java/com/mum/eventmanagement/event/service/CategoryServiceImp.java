@@ -1,4 +1,4 @@
-package com.mum.eventmanagement.event;
+package com.mum.eventmanagement.event.service;
 
 import java.util.List;
 
