@@ -33,7 +33,7 @@ public class UserSignupController {
 		if (result.hasErrors()) {
 			return "/user/signup";
 		}
-		user.setRole(Role.ROLE_USER);
+		user.setRole(Role.ROLE_ADMIN);
 		userService.save(user);
 		request.login(user.getUsername(), user.getPassword());		
 		return "/event/events";

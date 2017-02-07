@@ -19,11 +19,15 @@ public class LoginController {
 			//all data must be eriased or removed 
 			return "/user/loginReset";
 		}
-		if (logout != null)
+		
+			if (logout != null){
 			model.addAttribute("message", "You have been logged out successfully.");
 
 		return "/login";
+			}
+			return "/event/events";
 	}
+	
 
 	@RequestMapping("/logout")
 	public String showLoggedout() {
